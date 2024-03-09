@@ -283,7 +283,9 @@ pub fn fps_controller_move(
                         capsule.radius * 0.9,
                     );
                     // Avoid self collisions
-                    let filter = QueryFilter::default().exclude_rigid_body(entity);
+                    let filter = QueryFilter::default()
+                        .exclude_rigid_body(entity)
+                        .exclude_sensors();
                     let ground_cast = physics_context.cast_shape(
                         transform.translation,
                         transform.rotation,
@@ -470,7 +472,9 @@ fn overhang_component(
     // If there is a ledge in front of us we will hit the edge of it
     // We can use the normal of the hit to subtract off the component that is overhanging
     let cast_capsule = Collider::capsule(Vec3::Y * 0.125, -Vec3::Y * 0.125, 0.0);
-    let filter = QueryFilter::default().exclude_rigid_body(entity);
+    let filter = QueryFilter::default()
+        .exclude_rigid_body(entity)
+        .exclude_sensors();
     let future_position = transform.translation + velocity * dt;
     let cast = physics_context.cast_shape(
         future_position,
